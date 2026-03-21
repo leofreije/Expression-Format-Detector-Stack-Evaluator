@@ -3,4 +3,5 @@ project(expression_evaluator)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(expression_evaluator main.cpp)
+add_executable(expression_evaluator main.cpp
+        ArrayStack.h)
