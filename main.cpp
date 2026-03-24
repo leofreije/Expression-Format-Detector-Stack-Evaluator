@@ -14,14 +14,6 @@ struct Token {
     string value;   // number, operator, or parenthesis
 };
 
-// Tokenizer
-
-vector<Token> tokenize(const string& line) {
-    vector<Token> tokens;
-    // TODO
-    return tokens;
-}
-
 // Helpers
 
 bool isOperator(const string& s) {
@@ -38,6 +30,44 @@ int precedence(const string& op) {
         return 2;
     }
     return 0;
+}
+
+// Tokenizer
+
+vector<Token> tokenize(const string& line) {
+    vector<Token> tokens;
+    // TODO
+    for (size_t i = 0; i < line.length(); i++) {
+        char c = line[i];
+
+        if (isspace(c)) {
+            continue;
+        }
+
+        if (isdigit(c)) {
+            string number;
+            size_t temp = i;
+
+            while (temp < line.length() && isdigit(line[temp])) { //handles multiple digits
+                number += line[temp];
+                temp++;
+            }
+
+            tokens.push_back({number});
+            i = temp - 1;
+        }
+        else {
+            string s;
+            s += c;
+            if (isOperator(s)) {
+                tokens.push_back({s});
+            }
+            else if (s == "(" || s == ")") {
+                tokens.push_back({s});
+            }
+        }
+    }
+    return tokens;
 }
 
 // Detection
@@ -63,7 +93,7 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
 // Evaluation
 
 double evalPostfix(const vector<Token>& tokens) {
-    ArrayStack<double> stack;
+    //ArrayStack<double> stack;
     // TODO
     return 0.0;
 }
