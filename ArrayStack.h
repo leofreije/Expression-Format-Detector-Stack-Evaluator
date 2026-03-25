@@ -12,22 +12,16 @@ class ArrayStack {
 
 private:
     std::vector<T> data;
-    size_t maxSize;
+
 
 public:
-    ArrayStack(size_t maxSize) {
-        this->maxSize = maxSize;
-    }
 
     void push(const T& value) {
         // TODO
-        if (data.size() >= maxSize) {
-            throw overflow_error("Stack overflow");
-        }
         data.push_back(value);
     }
 
-    void top() {
+    void pop() {
         // TODO
         if (data.empty()) {
             throw underflow_error("Stack is empty");
