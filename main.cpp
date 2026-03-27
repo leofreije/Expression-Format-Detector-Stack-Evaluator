@@ -113,7 +113,37 @@ bool isValidPostfix(const vector<Token>& tokens) {
 
 bool isValidInfix(const vector<Token>& tokens) {
     // TODO
-    return false;
+    bool expectOp = false;
+    ArrayStack<Token> s;
+    for (int i = 0; i < tokens.size(); i++) {
+        if (tokens[i].value == "(") {
+            if (expectOp) {
+                return false;
+            }
+            s.push(tokens[i]);
+        }
+        else if (tokens[i].value == ")") {
+            if (s.empty() || !expectOp) {
+                return false;
+            }
+            s.pop();
+        }
+        else if (isNumber(tokens[i].value) ) {
+            expectOp = true;
+        }
+        else if (isOperator(tokens[i].value) && expectOp) {
+            expectOp = false;
+        }
+        else {
+            return false;
+        }
+    }
+
+    if (!s.empty() || !expectOp) {
+        return false;
+    }
+
+    return true;
 }
 
 // Conversion
@@ -135,12 +165,13 @@ double evalPostfix(const vector<Token>& tokens) {
 // Main
 
 int main() {
-    string line = " 1 2 3 + -";
+    string line = "(1 + 2) * 3"; //test
     //getline(cin, line);
 
     vector<Token> tokens = tokenize(line);
 
     cout << isValidPostfix(tokens) << endl;
+    cout << isValidInfix(tokens) << endl;
 
     // if (isValidPostfix(tokens)) {
     //     cout << "FORMAT: POSTFIX\n";
