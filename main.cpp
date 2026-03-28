@@ -157,15 +157,43 @@ vector<Token> infixToPostfix(const vector<Token>& tokens) {
 // Evaluation
 
 double evalPostfix(const vector<Token>& tokens) {
-    //ArrayStack<double> stack;
+    ArrayStack<double> s;
+    double first;
+    double second;
     // TODO
-    return 0.0;
+
+    for (int i = 0; i < tokens.size(); i++) {
+        if (isNumber(tokens[i].value)) {
+           s.push(stod(tokens[i].value));
+        }
+        else if (isOperator(tokens[i].value)) {
+            first = s.top();
+            s.pop();
+            second = s.top();
+            s.pop();
+
+            if (tokens[i].value == "-") {
+                s.push(second - first);
+            }
+            else if (tokens[i].value == "+") {
+                s.push(second + first);
+            }
+            else if (tokens[i].value == "/") {
+                s.push(second / first);
+            }
+            else if (tokens[i].value == "*") {
+                s.push(second * first);
+            }
+        }
+    }
+
+    return s.top();
 }
 
 // Main
 
 int main() {
-    string line = "(1 + 2) * 3"; //test
+    string line = "3 4 2 * +"; //test
     //getline(cin, line);
 
     vector<Token> tokens = tokenize(line);
@@ -173,10 +201,10 @@ int main() {
     cout << isValidPostfix(tokens) << endl;
     cout << isValidInfix(tokens) << endl;
 
-    // if (isValidPostfix(tokens)) {
-    //     cout << "FORMAT: POSTFIX\n";
-    //     cout << "RESULT: " << evalPostfix(tokens) << "\n";
-    // }
+    if (isValidPostfix(tokens)) {
+        cout << "FORMAT: POSTFIX\n";
+        cout << "RESULT: " << evalPostfix(tokens) << "\n";
+    }
     // else if (isValidInfix(tokens)) {
     //     vector<Token> postfix = infixToPostfix(tokens);
     //     cout << "FORMAT: INFIX\n";
